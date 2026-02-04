@@ -15,7 +15,7 @@ function Piece({ p }: { p: CheckersPiece }) {
       className={`
         inline-block w-[75%] h-[75%] rounded-full
         ${isRed ? "bg-checkers-red" : "bg-checkers-black"}
-        ${isKing ? "ring-2 ring-checkers-king" : ""}
+        ${isKing ? "ring-4 ring-checkers-king" : ""}
       `}
     />
   );
@@ -68,8 +68,7 @@ export function CheckersBoard({
 
   return (
     <div
-      className="inline-grid grid-cols-8 border-2 border-[var(--board-dark)]"
-      style={{ width: "min(90vw, 400px)" }}
+      className="w-full grid grid-cols-8 border-2 border-[var(--board-dark)]"
     >
       {board.map((row, r) =>
         row.map((cell, c) => {

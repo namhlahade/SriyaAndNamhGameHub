@@ -80,8 +80,7 @@ export function ChessBoard({
 
   return (
     <div
-      className="inline-grid grid-cols-8 border-2 border-[var(--board-dark)]"
-      style={{ width: "min(90vw, 400px)" }}
+      className="w-full grid grid-cols-8 border-2 border-[var(--board-dark)]"
     >
       {board.map((row, r) =>
         row.map((piece, c) => {
@@ -99,7 +98,7 @@ export function ChessBoard({
               disabled={disabled}
               onClick={() => handleClick(sq, piece)}
               className={`
-                aspect-square flex items-center justify-center text-2xl sm:text-3xl
+                aspect-square flex items-center justify-center text-4xl sm:text-5xl
                 ${light ? "bg-board-light" : "bg-board-dark"}
                 ${isLast ? "ring-2 ring-inset ring-board-last" : ""}
                 ${isTarget ? "square-valid-move" : ""}
