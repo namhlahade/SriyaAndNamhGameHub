@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #faf7f5;
+  --foreground: #1a1a1a;
+  --accent: #b45309;
+  --accent-soft: #fef3c7;
+  --board-light: #f0d9b5;
+  --board-dark: #b58863;
+  --board-last: #cdd26a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1a1a1a;
+    --foreground: #faf7f5;
+    --accent: #f59e0b;
+    --accent-soft: #422006;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-dm-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Chess/Checkers valid move indicator - uses absolute positioning to avoid shifting pieces */
+.square-valid-move {
+  position: relative;
+}
+
+.square-valid-move::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 25%;
+  height: 25%;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.2);
+  pointer-events: none;
+}
