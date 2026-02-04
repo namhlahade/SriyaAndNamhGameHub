@@ -19,11 +19,57 @@ export default function HomePage() {
   const [joinError, setJoinError] = useState("");
   const [createLoading, setCreateLoading] = useState(false);
   const [joinLoading, setJoinLoading] = useState(false);
+  const [autoJoining, setAutoJoining] = useState(false);
 
+  // Shared join logic
+  async function joinWithCode(code: string): Promise<boolean> {
+    const c = code.trim().toUpperCase();
+    if (!c) {
+      setJoinError("Enter an invite code.");
+      return false;
+    }
+    try {
+      const { data, error } = await supabase
+        .from("couples")
+        .select("id")
+        .eq("invite_code", c)
+        .single();
+      if (error || !data) {
+        setJoinError("Invalid or expired code. Check and try again.");
+        return false;
+      }
+      setStoredCouple({
+        coupleId: data.id,
+        inviteCode: c,
+        playerSlot: 2,
+      });
+      setStored(getStoredCouple());
+      router.push("/lobby");
+      return true;
+    } catch (e: any) {
+      setJoinError(e?.message || "Failed to join.");
+      return false;
+    }
+  }
+
+  // Check for stored couple and URL code
   useEffect(() => {
-    setStored(getStoredCouple());
+    const existingStored = getStoredCouple();
+    setStored(existingStored);
+    
     const code = searchParams.get("code");
-    if (code) setJoinCode(String(code).trim().toUpperCase());
+    if (code) {
+      const cleanCode = String(code).trim().toUpperCase();
+      setJoinCode(cleanCode);
+      
+      // Auto-join if not already in a space
+      if (!existingStored) {
+        setAutoJoining(true);
+        joinWithCode(cleanCode).finally(() => {
+          setAutoJoining(false);
+        });
+      }
+    }
   }, [searchParams]);
 
   async function handleCreate() {
@@ -62,35 +108,23 @@ export default function HomePage() {
     e.preventDefault();
     setJoinLoading(true);
     setJoinError("");
-    const c = joinCode.trim().toUpperCase();
-    if (!c) {
-      setJoinError("Enter an invite code.");
-      setJoinLoading(false);
-      return;
-    }
-    try {
-      const { data, error } = await supabase
-        .from("couples")
-        .select("id")
-        .eq("invite_code", c)
-        .single();
-      if (error || !data) {
-        setJoinError("Invalid or expired code. Check and try again.");
-        setJoinLoading(false);
-        return;
-      }
-      setStoredCouple({
-        coupleId: data.id,
-        inviteCode: c,
-        playerSlot: 2,
-      });
-      setStored(getStoredCouple());
-      router.push("/lobby");
-    } catch (e: any) {
-      setJoinError(e?.message || "Failed to join.");
-    } finally {
-      setJoinLoading(false);
-    }
+    await joinWithCode(joinCode);
+    setJoinLoading(false);
+  }
+
+  // Show loading screen when auto-joining
+  if (autoJoining) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[var(--background)]">
+        <div className="text-center max-w-md">
+          <h1 className="font-serif text-3xl font-bold text-[var(--foreground)] mb-2">
+            Sriya & Namh
+          </h1>
+          <p className="text-[var(--accent)] mb-6">Joining space...</p>
+          <div className="animate-pulse text-4xl">💕</div>
+        </div>
+      </div>
+    );
   }
 
   if (stored) {

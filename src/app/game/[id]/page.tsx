@@ -348,7 +348,7 @@ export default function GamePage() {
 
   return (
     <div className="min-h-screen p-4 bg-[var(--background)]">
-      <div className="max-w-lg mx-auto space-y-6">
+      <div className="max-w-xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <Link href="/lobby" className="text-sm text-[var(--accent)] hover:underline">
@@ -374,28 +374,30 @@ export default function GamePage() {
 
         {/* Board */}
         <div className="flex justify-center">
-          {gameType === "chess" && chessState && (
-            <ChessBoard
-              state={chessState}
-              mySlot={mySlot}
-              selected={chessSrc}
-              validMoves={chessValid}
-              onSelect={handleChessSelect}
-              onMove={handleChessMove}
-              disabled={!isMyTurn || isTerminal}
-            />
-          )}
-          {gameType === "checkers" && checkersState && (
-            <CheckersBoard
-              state={checkersState}
-              mySlot={mySlot}
-              selected={checkersSrc}
-              validMoves={checkersValid}
-              onSelect={handleCheckersSelect}
-              onMove={handleCheckersMove}
-              disabled={!isMyTurn || isTerminal}
-            />
-          )}
+          <div className="w-full max-w-lg">
+            {gameType === "chess" && chessState && (
+              <ChessBoard
+                state={chessState}
+                mySlot={mySlot}
+                selected={chessSrc}
+                validMoves={chessValid}
+                onSelect={handleChessSelect}
+                onMove={handleChessMove}
+                disabled={!isMyTurn || isTerminal}
+              />
+            )}
+            {gameType === "checkers" && checkersState && (
+              <CheckersBoard
+                state={checkersState}
+                mySlot={mySlot}
+                selected={checkersSrc}
+                validMoves={checkersValid}
+                onSelect={handleCheckersSelect}
+                onMove={handleCheckersMove}
+                disabled={!isMyTurn || isTerminal}
+              />
+            )}
+          </div>
         </div>
 
         {/* Game status */}
@@ -439,7 +441,7 @@ export default function GamePage() {
                 </p>
                 <button
                   onClick={acceptDraw}
-                  className="px-4 py-2 rounded bg-yellow-600 text-white font-medium mr-2"
+                  className="px-4 py-2 rounded bg-yellow-600 text-white font-medium mr-2 hover:bg-yellow-700 transition"
                 >
                   Accept
                 </button>
@@ -452,7 +454,7 @@ export default function GamePage() {
               {!drawOffered && (
                 <button
                   onClick={offerDraw}
-                  className="px-4 py-2 rounded border border-[var(--accent)] text-[var(--accent)] text-sm"
+                  className="px-4 py-2 rounded border border-[var(--accent)] text-[var(--accent)] text-sm hover:bg-[var(--accent)] hover:text-white transition"
                 >
                   Offer draw
                 </button>
@@ -464,7 +466,7 @@ export default function GamePage() {
               )}
               <button
                 onClick={resign}
-                className="px-4 py-2 rounded border border-red-500 text-red-500 text-sm"
+                className="px-4 py-2 rounded border border-red-500 text-red-500 text-sm hover:bg-red-500 hover:text-white transition"
               >
                 Resign
               </button>
@@ -472,23 +474,6 @@ export default function GamePage() {
           </div>
         )}
 
-        {/* Move history */}
-        {(chessState?.moveHistory?.length ?? 0) > 0 && (
-          <div className="space-y-2">
-            <h2 className="font-semibold text-[var(--foreground)]">Moves</h2>
-            <div className="p-3 rounded-lg bg-white/50 dark:bg-black/20 text-sm font-mono text-[var(--foreground)] max-h-32 overflow-y-auto">
-              {chessState?.moveHistory.join(" ")}
-            </div>
-          </div>
-        )}
-        {(checkersState?.moveHistory?.length ?? 0) > 0 && (
-          <div className="space-y-2">
-            <h2 className="font-semibold text-[var(--foreground)]">Moves</h2>
-            <div className="p-3 rounded-lg bg-white/50 dark:bg-black/20 text-sm font-mono text-[var(--foreground)] max-h-32 overflow-y-auto">
-              {checkersState?.moveHistory.join(", ")}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

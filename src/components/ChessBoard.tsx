@@ -45,6 +45,9 @@ export function ChessBoard({
   const board = fenToBoard(state.fen);
   const files = "abcdefgh";
 
+  // Determine if we're playing as black (flip the board)
+  const isBlack = mySlot === state.blackPlayer;
+
   // Correct isMyTurn: check if current turn matches my assigned color
   const isMyTurn = (state.turn === 1 && state.whitePlayer === mySlot) ||
                    (state.turn === 2 && state.blackPlayer === mySlot);
@@ -78,12 +81,19 @@ export function ChessBoard({
     onSelect(null);
   }
 
+  // Create display order based on perspective
+  // White: rows 0-7 (rank 8 to 1), cols 0-7 (a to h)
+  // Black: rows 7-0 (rank 1 to 8), cols 7-0 (h to a)
+  const rowOrder = isBlack ? [7, 6, 5, 4, 3, 2, 1, 0] : [0, 1, 2, 3, 4, 5, 6, 7];
+  const colOrder = isBlack ? [7, 6, 5, 4, 3, 2, 1, 0] : [0, 1, 2, 3, 4, 5, 6, 7];
+
   return (
     <div
       className="w-full grid grid-cols-8 border-2 border-[var(--board-dark)]"
     >
-      {board.map((row, r) =>
-        row.map((piece, c) => {
+      {rowOrder.map((r) =>
+        colOrder.map((c) => {
+          const piece = board[r][c];
           const light = (r + c) % 2 === 0;
           const sq = `${files[c]}${8 - r}`;
           const isSel = selected === sq;

@@ -165,7 +165,7 @@ export default function LobbyPage() {
             </code>
             <button
               onClick={() => navigator.clipboard.writeText(url)}
-              className="px-3 py-2 rounded bg-[var(--accent)] text-white text-sm font-medium"
+              className="px-3 py-2 rounded bg-[var(--accent)] text-white text-sm font-medium hover:opacity-80 transition"
             >
               Copy
             </button>
@@ -194,13 +194,13 @@ export default function LobbyPage() {
                   router.push(`/game/${gameInvite.gameId}`);
                   setGameInvite(null);
                 }}
-                className="px-4 py-2 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700"
+                className="px-4 py-2 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700 transition"
               >
                 Join now
               </button>
               <button
                 onClick={() => setGameInvite(null)}
-                className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-medium"
+                className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition"
               >
                 Dismiss
               </button>
