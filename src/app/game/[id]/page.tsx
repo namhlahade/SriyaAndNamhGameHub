@@ -52,6 +52,9 @@ export default function GamePage() {
   // Notifications permission requested
   const [notifRequested, setNotifRequested] = useState(false);
 
+  // Auto-redirect countdown
+  const [redirectCountdown, setRedirectCountdown] = useState<number | null>(null);
+
   useEffect(() => {
     const s = getStoredCouple();
     if (!s) {
@@ -185,6 +188,27 @@ export default function GamePage() {
     persistSessionScores(next);
     markGameCounted(game.id);
   }, [game, gameType]);
+
+  // Auto-redirect to lobby when game ends
+  useEffect(() => {
+    if (isTerminal && redirectCountdown === null) {
+      setRedirectCountdown(3);
+    }
+  }, [isTerminal, redirectCountdown]);
+
+  useEffect(() => {
+    if (redirectCountdown === null || redirectCountdown < 0) {
+      return;
+    }
+    if (redirectCountdown === 0) {
+      router.push("/lobby");
+      return;
+    }
+    const timer = setTimeout(() => {
+      setRedirectCountdown(redirectCountdown - 1);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [redirectCountdown, router]);
 
   // Chess handlers
   function handleChessSelect(sq: string | null) {
@@ -376,7 +400,7 @@ export default function GamePage() {
 
         {/* Game status */}
         {isTerminal && (
-          <div className="text-center p-4 rounded-xl bg-[var(--accent-soft)]">
+          <div className="text-center p-4 rounded-xl bg-[var(--accent-soft)] space-y-3">
             <p className="font-semibold text-[var(--foreground)]">
               {game.status === "draw" || game.status === "stalemate" || game.status === "draw_accepted"
                 ? "Game ended in a draw"
@@ -384,9 +408,24 @@ export default function GamePage() {
                 ? "You won!"
                 : "You lost"}
             </p>
-            <p className="text-sm text-[var(--accent)] mt-1 capitalize">
+            <p className="text-sm text-[var(--accent)] capitalize">
               {game.status.replace(/_/g, " ")}
             </p>
+            <div className="pt-2 border-t border-[var(--accent)]/20">
+              {redirectCountdown !== null && redirectCountdown > 0 ? (
+                <p className="text-sm text-[var(--foreground)]">
+                  Returning to lobby in {redirectCountdown}...
+                </p>
+              ) : (
+                <p className="text-sm text-[var(--foreground)]">Redirecting...</p>
+              )}
+              <button
+                onClick={() => router.push("/lobby")}
+                className="mt-2 px-4 py-2 rounded-lg bg-[var(--accent)] text-white font-medium hover:opacity-90 transition"
+              >
+                Return now
+              </button>
+            </div>
           </div>
         )}
 

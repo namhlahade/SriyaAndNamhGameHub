@@ -14,7 +14,7 @@ export interface SessionScores {
 }
 
 const empty: GameScores = { p1: 0, p2: 0, draws: 0 };
-
+  
 export function getEmptySession(): SessionScores {
   return {
     chess: { ...empty },
