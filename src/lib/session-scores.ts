@@ -14,7 +14,7 @@ export interface SessionScores {
 }
 
 const empty: GameScores = { p1: 0, p2: 0, draws: 0 };
-  
+
 export function getEmptySession(): SessionScores {
   return {
     chess: { ...empty },
@@ -77,7 +77,7 @@ export function markGameCounted(gameId: string): void {
     const raw = sessionStorage.getItem(COUNTED_KEY);
     const set = new Set<string>(raw ? JSON.parse(raw) : []);
     set.add(gameId);
-    sessionStorage.setItem(COUNTED_KEY, JSON.stringify([...set]));
+    sessionStorage.setItem(COUNTED_KEY, JSON.stringify(Array.from(set)));
   } catch {}
 }
 

@@ -44,10 +44,7 @@ export interface CheckersCell {
   piece: CheckersPiece;
 }
 
-export type GameState = { chess?: ChessState; checkers?: CheckersState } & (
-  | { chess: ChessState }
-  | { checkers: CheckersState }
-);
+export type GameState = ChessState | CheckersState;
 
 export interface GameRow {
   id: string;

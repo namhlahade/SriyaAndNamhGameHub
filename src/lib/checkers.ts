@@ -1,5 +1,8 @@
 import type { CheckersState, CheckersPiece, CheckersCell } from "./supabase";
 
+// Re-export types for convenience
+export type { CheckersCell };
+
 const ROWS = 8;
 const COLS = 8;
 

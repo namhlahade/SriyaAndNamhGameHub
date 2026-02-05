@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import {
@@ -11,7 +11,7 @@ import {
 } from "@/lib/couple";
 import Link from "next/link";
 
-export default function HomePage() {
+function HomePageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [stored, setStored] = useState<StoredCouple | null>(null);
@@ -198,5 +198,24 @@ export default function HomePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[var(--background)]">
+          <div className="text-center max-w-md">
+            <h1 className="font-serif text-3xl font-bold text-[var(--foreground)] mb-2">
+              Sriya & Namh
+            </h1>
+            <p className="text-[var(--accent)] mb-6">Loading...</p>
+          </div>
+        </div>
+      }
+    >
+      <HomePageContent />
+    </Suspense>
   );
 }

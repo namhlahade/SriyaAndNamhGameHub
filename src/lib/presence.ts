@@ -58,7 +58,7 @@ export function usePresence(coupleId: string | null, mySlot: 1 | 2) {
       ch.on("presence", { event: "join" }, ({ newPresences }) => {
         if (cancelled) return;
         const partnerSlot = mySlot === 1 ? 2 : 1;
-        if (newPresences.some((p: PresencePayload) => p.playerSlot === partnerSlot)) {
+        if (newPresences.some((p: any) => p.playerSlot === partnerSlot)) {
           setPartnerOnline(true);
         }
       });
@@ -66,7 +66,7 @@ export function usePresence(coupleId: string | null, mySlot: 1 | 2) {
       ch.on("presence", { event: "leave" }, ({ leftPresences }) => {
         if (cancelled) return;
         const partnerSlot = mySlot === 1 ? 2 : 1;
-        if (leftPresences.some((p: PresencePayload) => p.playerSlot === partnerSlot)) {
+        if (leftPresences.some((p: any) => p.playerSlot === partnerSlot)) {
           setPartnerOnline(false);
         }
       });
