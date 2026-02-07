@@ -112,10 +112,24 @@ function HomePageContent() {
     setJoinLoading(false);
   }
 
+  // Background image layer shared across all views
+  const bgLayer = (
+    <>
+      {/* Background image */}
+      <div
+        className="fixed inset-0 -z-20 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/couple-bg.png')" }}
+      />
+      {/* Rose-tinted overlay for romantic feel */}
+      <div className="fixed inset-0 -z-10 bg-[#fdf2f4]/80 dark:bg-[#1c1517]/85 backdrop-blur-sm" />
+    </>
+  );
+
   // Show loading screen when auto-joining
   if (autoJoining) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[var(--background)]">
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 relative">
+        {bgLayer}
         <div className="text-center max-w-md">
           <h1 className="font-serif text-3xl font-bold text-[var(--foreground)] mb-2">
             Sriya & Namh
@@ -129,7 +143,8 @@ function HomePageContent() {
 
   if (stored) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[var(--background)]">
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 relative">
+        {bgLayer}
         <div className="text-center max-w-md">
           <h1 className="font-serif text-3xl font-bold text-[var(--foreground)] mb-2">
             Sriya & Namh
@@ -137,7 +152,7 @@ function HomePageContent() {
           <p className="text-[var(--accent)] mb-6">You&apos;re in your game space.</p>
           <Link
             href="/lobby"
-            className="inline-block px-6 py-3 rounded-xl bg-[var(--accent)] text-white font-medium hover:opacity-90 transition"
+            className="inline-block px-6 py-3 rounded-xl bg-[var(--accent)] text-white font-medium hover:opacity-90 transition shadow-lg"
           >
             Go to lobby
           </Link>
@@ -147,7 +162,8 @@ function HomePageContent() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[var(--background)]">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative">
+      {bgLayer}
       <div className="w-full max-w-sm space-y-8">
         <div className="text-center">
           <h1 className="font-serif text-4xl font-bold text-[var(--foreground)]">
@@ -156,11 +172,11 @@ function HomePageContent() {
           <p className="mt-2 text-[var(--accent)]">Game Hub</p>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-6 bg-[var(--background)]/70 backdrop-blur-md rounded-2xl p-6 shadow-xl border border-[var(--accent-soft)]">
           <button
             onClick={handleCreate}
             disabled={createLoading}
-            className="w-full py-4 px-4 rounded-xl bg-[var(--accent)] text-white font-semibold hover:opacity-90 disabled:opacity-60 transition"
+            className="w-full py-4 px-4 rounded-xl bg-[var(--accent)] text-white font-semibold hover:opacity-90 disabled:opacity-60 transition shadow-md"
           >
             {createLoading ? "Creating…" : "Create a space"}
           </button>
@@ -170,7 +186,7 @@ function HomePageContent() {
               <div className="w-full border-t border-[var(--accent-soft)]" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-[var(--background)] text-[var(--accent)]">or</span>
+              <span className="px-2 bg-[var(--background)]/70 text-[var(--accent)]">or</span>
             </div>
           </div>
 
@@ -181,12 +197,12 @@ function HomePageContent() {
               onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
               placeholder="Invite code"
               maxLength={8}
-              className="w-full py-3 px-4 rounded-xl border border-[var(--accent-soft)] bg-transparent text-[var(--foreground)] placeholder:text-[var(--accent)]/70 focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
+              className="w-full py-3 px-4 rounded-xl border border-[var(--accent-soft)] bg-white/50 dark:bg-black/20 text-[var(--foreground)] placeholder:text-[var(--accent)]/70 focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
             />
             <button
               type="submit"
               disabled={joinLoading}
-              className="w-full py-3 rounded-xl border-2 border-[var(--accent)] text-[var(--accent)] font-semibold hover:bg-[var(--accent-soft)] disabled:opacity-60 transition"
+              className="w-full py-3 rounded-xl border-2 border-[var(--accent)] text-[var(--accent)] font-semibold hover:bg-[var(--accent)] hover:text-white disabled:opacity-60 transition"
             >
               {joinLoading ? "Joining…" : "Join with code"}
             </button>
